@@ -5,6 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import TableData from "./TableData";
 
 function App() {
   const [age, setAge] = useState("");
@@ -25,57 +26,71 @@ function App() {
               <p>Filter Student By:</p>
             </div>
             <div className="input-wrapper">
-              <Box  className="input-form">
+              <Box sx={{ maxWidth: 700 }} className="input-form">
                 <FormControl fullWidth className="form-control">
-                  <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                  <InputLabel id="demo-simple-select-label">
+                    Select Age
+                  </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={age}
-                    label="Age"
+                    label="Select age"
                     onChange={handleChange}
                   ></Select>
                 </FormControl>
                 <FormControl fullWidth className="form-control">
-                  <InputLabel id="demo-simple-select-label">State</InputLabel>
+                  <InputLabel id="demo-simple-select-label">
+                    Select State
+                  </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={age}
-                    label="State"
+                    label="Select State"
                     onChange={handleChange}
                   ></Select>
                 </FormControl>
                 <FormControl fullWidth className="form-control">
-                  <InputLabel id="demo-simple-select-label">Level</InputLabel>
+                  <InputLabel id="demo-simple-select-label">
+                    Select Level
+                  </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={age}
-                    label="Level"
+                    label="Select Level"
                     onChange={handleChange}
                   ></Select>
                 </FormControl>
               </Box>
-              <Box sx={{ maxWidth: 459, marginTop:"30px"}} className="input-form-one">
+              <Box
+                sx={{ maxWidth: 459, marginTop: "30px" }}
+                className="input-form-one"
+              >
                 <FormControl fullWidth className="form-control">
-                  <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                  <InputLabel id="demo-simple-select-label">
+                    Select Gender
+                  </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={age}
-                    label="Gender"
+                    label="Select Gender"
                     onChange={handleChange}
                   >
-                  <MenuItem>Male</MenuItem>
-                  <MenuItem>Female</MenuItem>
+                    <MenuItem>Male</MenuItem>
+                    <MenuItem>Female</MenuItem>
                   </Select>
                 </FormControl>
                 <button className="btn-search">Search</button>
-                </Box>
+              </Box>
             </div>
           </div>
-          <div className="api-data-table"></div>
+          {/* table */}
+          <div className="api-data-table">
+            <TableData />
+          </div>
         </div>
       </header>
     </div>
