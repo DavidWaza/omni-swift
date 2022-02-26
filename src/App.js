@@ -6,7 +6,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-// import TableData from "./TableData";
 
 function App() {
   const [ages, setAges] = useState([]);
@@ -16,9 +15,6 @@ function App() {
   const [selectedStates, setSelectedStates] = useState([]);
   const [levels, setLevels] = useState([]);
   const [selectedLevels, setSelectedLevels] = useState([]);
-  // const [genders, setGenders] = useState("");
-  // const [selectedGender, setSelectedGender] = useState("");
-
   useEffect(() => {
     Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllData")
       .then((res) => {
@@ -33,13 +29,18 @@ function App() {
     getAges();
     getStates();
     getLevels();
-    // getGenders();
   }, []);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(e);
   };
+  const postData = () => {
+    const url = "https://testapiomniswift.herokuapp.com/api/filterData"
+    Axios.post(url)
+    .then((res) => {
+      console.log(res.data.data)
+    })
+  }
 
   const getAges = () => {
     Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllAges")
@@ -54,7 +55,6 @@ function App() {
   const getStates = () => {
     Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllStates")
       .then((res) => {
-        // console.log(res.data.data);
         setStates(res.data.data);
       })
       .catch((err) => {
@@ -64,26 +64,16 @@ function App() {
   const getLevels = () => {
     Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllLevels")
       .then((res) => {
-        // console.log(res.data.data);
         setLevels(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  // const getGenders = () => {
-  //   Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllAges")
-  //     .then((res) => {
-  //       console.log(res.data.data);
-  //       setGenders(res.data.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
 
   return (
     <div className="App">
+     
       <div className="header-text">
         <h1>Student Data Table</h1>
       </div>
@@ -160,7 +150,7 @@ function App() {
               <MenuItem value="female">Female</MenuItem>
             </Select>
           </FormControl>
-          <button className="btn-search">Search</button>
+          <button className="btn-search" onClick={() => postData()}>Search</button>
         </Box>
       </div>
       {/* table */}
