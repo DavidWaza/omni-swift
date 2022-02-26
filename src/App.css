@@ -7,6 +7,8 @@ body {
   background-color: #f9f9fa;
 }
 .header-text {
+  margin-top: 50px;
+  margin-bottom: 20px;
   font-size: 20px;
   margin-left: 60px;
 }
@@ -19,8 +21,8 @@ body {
 .api-data-table {
   width: 90%;
   margin: 0 auto;
-  overflow: scroll;
-  padding-top: 30px;
+  overflow-y: scroll;
+  padding-top: 70px;
   height: 513px;
   margin-top: 40px;
   background-color: #fff;
