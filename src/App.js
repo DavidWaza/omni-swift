@@ -15,17 +15,9 @@ function App() {
   const [selectedStates, setSelectedStates] = useState([]);
   const [levels, setLevels] = useState([]);
   const [selectedLevels, setSelectedLevels] = useState([]);
-  useEffect(() => {
-    Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllData")
-      .then((res) => {
-        setStudents(res.data.data.students);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   useEffect(() => {
+    getStudents();
     getAges();
     getStates();
     getLevels();
@@ -36,11 +28,23 @@ function App() {
   };
   const postData = () => {
     const url = "https://testapiomniswift.herokuapp.com/api/filterData"
-    Axios.post(url)
+    Axios.post(url, {...ages, ...students, ...levels, ...states})
     .then((res) => {
-      console.log(res.data.data)
+      console.log("you posted",res.data.data)
+    })
+    .catch((err) => {
+      console.log(err)
     })
   }
+const getStudents = () => {
+  Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllData")
+      .then((res) => {
+        setStudents(res.data.data.students);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+}
 
   const getAges = () => {
     Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllAges")
@@ -73,7 +77,6 @@ function App() {
 
   return (
     <div className="App">
-     
       <div className="header-text">
         <h1>Student Data Table</h1>
       </div>
