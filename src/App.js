@@ -9,12 +9,15 @@ import Select from "@mui/material/Select";
 // import TableData from "./TableData";
 
 function App() {
-  const [age, setAge] = useState([]);
-  // const [data, setData] = useState("");
+  const [ages, setAges] = useState([]);
+  const [selectedAge, setSelectedAge] = useState([]);
   const [students, setStudents] = useState([]);
-  const [state, setState] = useState("");
-  const [level, setLevel] = useState("");
-  const [gender, setGender] = useState("");
+  const [states, setStates] = useState([]);
+  const [selectedStates, setSelectedStates] = useState([]);
+  const [levels, setLevels] = useState([]);
+  const [selectedLevels, setSelectedLevels] = useState([]);
+  // const [genders, setGenders] = useState("");
+  // const [selectedGender, setSelectedGender] = useState("");
 
   useEffect(() => {
     Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllData")
@@ -27,7 +30,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    handleAgeChange();
+    getAges();
+    getStates();
+    getLevels();
+    // getGenders();
   }, []);
 
   const submitHandler = (e) => {
@@ -35,25 +41,46 @@ function App() {
     console.log(e);
   };
 
-  const handleAgeChange = () => {
+  const getAges = () => {
     Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllAges")
       .then((res) => {
-        console.log(res.data);
-        setAge(res.data);
+        console.log(res.data.data);
+        setAges(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  const handleStateChange = (event) => {
-    setState(event.target.value);
+  const getStates = () => {
+    Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllStates")
+      .then((res) => {
+        // console.log(res.data.data);
+        setStates(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  const handleLevelChange = (event) => {
-    setLevel(event.target.value);
+  const getLevels = () => {
+    Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllLevels")
+      .then((res) => {
+        // console.log(res.data.data);
+        setLevels(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  const handleGenderChange = (event) => {
-    setGender(event.target.value);
-  };
+  // const getGenders = () => {
+  //   Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllAges")
+  //     .then((res) => {
+  //       console.log(res.data.data);
+  //       setGenders(res.data.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   return (
     <div className="App">
@@ -72,52 +99,67 @@ function App() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={age}
+              value={selectedAge}
               label="Select age"
-              onChange={handleAgeChange}
+              onChange={(e) => setSelectedAge(e.target.value)}
             >
-              {age.map((ages) => {
-                return(
-                <MenuItem key={ages.id}>{ages.age}</MenuItem>
-                )
+              {ages.map((age) => {
+                return (
+                  <MenuItem value={age.age} key={age.id}>
+                    {age.age}
+                  </MenuItem>
+                );
               })}
             </Select>
           </FormControl>
-
           <FormControl fullWidth className="form-control">
             <InputLabel id="demo-simple-select-label">Select State</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={state}
+              value={selectedStates}
               label="Select State"
-              onChange={handleStateChange}
-            ></Select>
+              onChange={(e) => setSelectedStates(e.target.value)}
+            >
+              {states.map((state) => {
+                return (
+                  <MenuItem value={state.name} key={state.id}>
+                    {state.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
           </FormControl>
           <FormControl fullWidth className="form-control">
             <InputLabel id="demo-simple-select-label">Select Level</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={level}
+              value={selectedLevels}
               label="Select Level"
-              onChange={handleLevelChange}
-            ></Select>
+              onChange={(e) => setSelectedLevels(e.target.value)}
+            >
+              {levels.map((level) => {
+                return (
+                  <MenuItem value={level.level} key={level.id}>
+                    {level.level}
+                  </MenuItem>
+                );
+              })}
+            </Select>
           </FormControl>
           <FormControl fullWidth className="form-control">
             <InputLabel id="demo-simple-select-label">Select Gender</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={gender}
+              // value={selectedGender}
               label="Select Gender"
-              onChange={handleGenderChange}
             >
-              <MenuItem>Male</MenuItem>
-              <MenuItem>Female</MenuItem>
+              <MenuItem value="male">Male</MenuItem>
+              <MenuItem value="female">Female</MenuItem>
             </Select>
           </FormControl>
-
           <button className="btn-search">Search</button>
         </Box>
       </div>
