@@ -126,6 +126,7 @@ body {
   }
   .header-text {
     text-align: center;
+    margin-right: 51px;
   }
   .text {
     float: left;
