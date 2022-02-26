@@ -2,28 +2,27 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const TableData = () => {
-  const [posts, SetPosts] = useState([]);
+  const [students, setStudents] = useState([]);
 
   useEffect(() => {
     axios
       .get("https://testapiomniswift.herokuapp.com/api/viewAllData")
-
       .then((res) => {
-        console.log(res);
-        SetPosts(res.data)
+        console.log(res.data.data);
+        setStudents(res.data.data.students)
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
   return (
-    <div>
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id}>{post.surname}</li>
+    <>
+      <ol>
+        {students.map((student) => (
+          <li key={student.id}>{student.surname} {student.firstname}</li>
         ))}
-      </ul>
-    </div>
+      </ol>
+    </>
   );
 };
 
