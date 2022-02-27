@@ -21,6 +21,7 @@ function App() {
   const [filterPostData, setFilterPostData] = useState({});
   const [message, setMessage] = useState("");
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   let filteredObject = {};
   filteredObject = {
     age: selectedAge || "",
@@ -38,7 +39,7 @@ function App() {
 
   useEffect(() => {
     setFilterPostData({ ...filterPostData, filteredObject });
-  }, [selectedAge, selectedState, selectedLevel, selectedGender]);
+  }, [selectedAge, selectedState, selectedLevel, selectedGender, filterPostData, filteredObject]);
 
   const submitHandler = (e) => {
     e.preventDefault();
