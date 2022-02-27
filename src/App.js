@@ -19,6 +19,7 @@ function App() {
   const [genders] = useState(["male", "female"]);
   const [selectedGender, setSelectedGender] = useState("");
   const [filterPostData, setFilterPostData] = useState({});
+  const [message, setMessage] = useState("");
 
   let filteredObject = {};
   filteredObject = {
@@ -35,19 +36,29 @@ function App() {
     getLevels();
   }, []);
 
+  useEffect(() => {
+    setFilterPostData({ ...filterPostData, filteredObject });
+  }, [selectedAge, selectedState, selectedLevel, selectedGender]);
+
   const submitHandler = (e) => {
     e.preventDefault();
-    setFilterPostData({ ...filterPostData, filteredObject });
     postData();
   };
 
   // POST request
-  const postData = async () => {
+  const postData = () => {
     Axios.post(
       "https://testapiomniswift.herokuapp.com/api/filterData",
       filterPostData.filteredObject
     )
-      .then((res) => setFilteredStudents(res.data.data.students))
+      .then((res) => {
+        if (res.data.message === "Successful") {
+          setFilteredStudents(res.data.data.students);
+          setMessage("");
+        } else {
+          setMessage(res.data.message);
+        }
+      })
       .catch((err) => console.log(err));
   };
 
@@ -193,6 +204,7 @@ function App() {
       </div>
       {/* table */}
       <div className="api-data-table">
+      <p className="api-response">{message}</p>
         <table className="table">
           <thead className="thead">
             <tr>
@@ -207,9 +219,9 @@ function App() {
           </thead>
           <tbody>
             {filteredStudents?.length > 0
-              ? filteredStudents?.map((student) => (
+              ? filteredStudents?.map((student, i) => (
                   <tr className="student-data" key={student.id}>
-                    <th scope="row">{student.id}</th>
+                    <th scope="row">{i + 1}</th>
                     <td>{student.surname}</td>
                     <td>{student.firstname}</td>
                     <td>{student.age}</td>
