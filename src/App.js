@@ -8,13 +8,25 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 function App() {
-  const [ages, setAges] = useState([]);
-  const [selectedAge, setSelectedAge] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
   const [students, setStudents] = useState([]);
+  const [ages, setAges] = useState([]);
+  const [selectedAge, setSelectedAge] = useState("");
   const [states, setStates] = useState([]);
-  const [selectedStates, setSelectedStates] = useState([]);
+  const [selectedState, setSelectedState] = useState("");
   const [levels, setLevels] = useState([]);
-  const [selectedLevels, setSelectedLevels] = useState([]);
+  const [selectedLevel, setSelectedLevel] = useState("");
+  const [genders] = useState(["male", "female"]);
+  const [selectedGender, setSelectedGender] = useState("");
+  const [filterPostData, setFilterPostData] = useState({});
+
+  let filteredObject = {};
+  filteredObject = {
+    age: selectedAge || "",
+    state: selectedState || "",
+    level: selectedLevel || "",
+    gender: selectedGender || "",
+  };
 
   useEffect(() => {
     getStudents();
@@ -25,31 +37,34 @@ function App() {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    setFilterPostData({ ...filterPostData, filteredObject });
+    postData();
   };
-  const postData = () => {
-    const url = "https://testapiomniswift.herokuapp.com/api/filterData"
-    Axios.post(url, {...ages, ...students, ...levels, ...states})
-    .then((res) => {
-      console.log("you posted",res.data.data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  }
-const getStudents = () => {
-  Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllData")
+
+  // POST request
+  const postData = async () => {
+    Axios.post(
+      "https://testapiomniswift.herokuapp.com/api/filterData",
+      filterPostData.filteredObject
+    )
+      .then((res) => setFilteredStudents(res.data.data.students))
+      .catch((err) => console.log(err));
+  };
+
+  // GET requests
+  const getStudents = () => {
+    Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllData")
       .then((res) => {
         setStudents(res.data.data.students);
       })
       .catch((err) => {
         console.log(err);
       });
-}
+  };
 
   const getAges = () => {
     Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllAges")
       .then((res) => {
-        console.log(res.data.data);
         setAges(res.data.data);
       })
       .catch((err) => {
@@ -88,7 +103,9 @@ const getStudents = () => {
           onSubmit={submitHandler}
         >
           <FormControl fullWidth className="form-control">
-            <InputLabel id="demo-simple-select-label">Select Age</InputLabel>
+            <InputLabel id="demo-simple-select-label" name="selectAge">
+              Select Age
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -106,13 +123,15 @@ const getStudents = () => {
             </Select>
           </FormControl>
           <FormControl fullWidth className="form-control">
-            <InputLabel id="demo-simple-select-label">Select State</InputLabel>
+            <InputLabel id="demo-simple-select-label" name="selectState">
+              Select State
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={selectedStates}
+              value={selectedState}
               label="Select State"
-              onChange={(e) => setSelectedStates(e.target.value)}
+              onChange={(e) => setSelectedState(e.target.value)}
             >
               {states.map((state) => {
                 return (
@@ -124,13 +143,15 @@ const getStudents = () => {
             </Select>
           </FormControl>
           <FormControl fullWidth className="form-control">
-            <InputLabel id="demo-simple-select-label">Select Level</InputLabel>
+            <InputLabel id="demo-simple-select-label" name="selectLevel">
+              Select Level
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={selectedLevels}
+              value={selectedLevel}
               label="Select Level"
-              onChange={(e) => setSelectedLevels(e.target.value)}
+              onChange={(e) => setSelectedLevel(e.target.value)}
             >
               {levels.map((level) => {
                 return (
@@ -142,18 +163,32 @@ const getStudents = () => {
             </Select>
           </FormControl>
           <FormControl fullWidth className="form-control">
-            <InputLabel id="demo-simple-select-label">Select Gender</InputLabel>
+            <InputLabel id="demo-simple-select-label" name="selectGender">
+              Select Gender
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              // value={selectedGender}
+              value={selectedGender}
               label="Select Gender"
+              onChange={(e) => setSelectedGender(e.target.value)}
             >
-              <MenuItem value="male">Male</MenuItem>
-              <MenuItem value="female">Female</MenuItem>
+              {genders.map((gender, i) => {
+                return (
+                  <MenuItem key={i} value={gender}>
+                    {gender}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
-          <button className="btn-search" onClick={() => postData()}>Search</button>
+          <button
+            className="btn-search"
+            type="submit"
+            onClick={(e) => submitHandler(e)}
+          >
+            Search
+          </button>
         </Box>
       </div>
       {/* table */}
@@ -171,17 +206,29 @@ const getStudents = () => {
             </tr>
           </thead>
           <tbody>
-            {students.map((student) => (
-              <tr className="student-data" key={student.id}>
-                <th scope="row">{student.id}</th>
-                <td>{student.surname}</td>
-                <td>{student.firstname}</td>
-                <td>{student.age}</td>
-                <td>{student.gender}</td>
-                <td>{student.level}</td>
-                <td>{student.state}</td>
-              </tr>
-            ))}
+            {filteredStudents?.length > 0
+              ? filteredStudents?.map((student) => (
+                  <tr className="student-data" key={student.id}>
+                    <th scope="row">{student.id}</th>
+                    <td>{student.surname}</td>
+                    <td>{student.firstname}</td>
+                    <td>{student.age}</td>
+                    <td>{student.gender}</td>
+                    <td>{student.level}</td>
+                    <td>{student.state}</td>
+                  </tr>
+                ))
+              : students?.map((student) => (
+                  <tr className="student-data" key={student.id}>
+                    <th scope="row">{student.id}</th>
+                    <td>{student.surname}</td>
+                    <td>{student.firstname}</td>
+                    <td>{student.age}</td>
+                    <td>{student.gender}</td>
+                    <td>{student.level}</td>
+                    <td>{student.state}</td>
+                  </tr>
+                ))}
           </tbody>
         </table>
       </div>
