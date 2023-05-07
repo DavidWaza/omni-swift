@@ -49,7 +49,7 @@ function App() {
   // POST request
   const postData = () => {
     Axios.post(
-      "https://testapiomniswift.herokuapp.com/api/filterData",
+      "https://test.omniswift.com.ng/api/filterData",
       filterPostData.filteredObject
     )
       .then((res) => {
@@ -65,7 +65,7 @@ function App() {
 
   // GET requests
   const getStudents = () => {
-    Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllData")
+    Axios.get("https://test.omniswift.com.ng/api/viewAllData")
       .then((res) => {
         setStudents(res.data.data.students);
       })
@@ -75,7 +75,7 @@ function App() {
   };
 
   const getAges = () => {
-    Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllAges")
+    Axios.get("https://test.omniswift.com.ng/api/viewAllAges")
       .then((res) => {
         setAges(res.data.data);
       })
@@ -84,7 +84,7 @@ function App() {
       });
   };
   const getStates = () => {
-    Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllStates")
+    Axios.get("https://test.omniswift.com.ng/api/viewAllStates")
       .then((res) => {
         setStates(res.data.data);
       })
@@ -93,7 +93,7 @@ function App() {
       });
   };
   const getLevels = () => {
-    Axios.get("https://testapiomniswift.herokuapp.com/api/viewAllLevels")
+    Axios.get("https://test.omniswift.com.ng/api/viewAllLevels")
       .then((res) => {
         setLevels(res.data.data);
       })

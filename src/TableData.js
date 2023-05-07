@@ -6,7 +6,7 @@ const TableData = () => {
 
   useEffect(() => {
     axios
-      .get("https://testapiomniswift.herokuapp.com/api/viewAllData")
+      .get("https://test.omniswift.com.ng/api/viewAllData")
       .then((res) => {
         console.log(res.data.data);
         setStudents(res.data.data.students)
